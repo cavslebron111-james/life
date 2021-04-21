@@ -1,50 +1,74 @@
 import React, { Component } from 'react';
-import {Switch,Route} from "react-router-dom";
+import Child from './Child'
+
 import './App.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from './components/Navbar';
-import Productlist from './components/Productlist';
-import Details from './components/Details';
-import Cart from './components/Cart';
-import Default from './components/Default';
-import Modal from './components/Modal';
 
 
 
 
-
-class App extends Component {
-  render() {
-    return (
   
-  <React.Fragment>
-     <Navbar></Navbar>
-     <Switch>
+  
+class App extends Component {
+  
+  constructor(props){
+    console.log('master constructor')
+    super(props)
 
-      <Route exact path="/" component={Productlist}/>
-      <Route path="/Details" component={Details}/>
-      
-      <Route path="/cart" component={Cart}/>
-      
-      <Route component={Default}/>
-     
+    this.state = {
+      mount: true,
+      ignoreProp: 0,
+      seed: 40
+    }
+  
+  }
 
+  componentDidMount(){
+    console.log('mastercomponentdidmount')
+  }
 
-     </Switch>
-     < Modal />
-     
- 
- 
-
- 
-
-
-
-
-
-  </React.Fragment>
+  static getDerivedStateFromProps(props,state){
+    console.log('mastergetderivedstatefromprops')
     
+    
+    return null
+  }
 
+  shouldComponentUpdate(){
+    console.log('mastershouldcomponentupdate')
+    return true
+  }
+
+  getSnapshotBeforeUpdate(prevProps,prevState){
+    console.log('mastergetsnapshotbeforeupdate')
+    return null
+  }
+   
+  componentDidUpdate(prevProps,prevState,snapshot){
+    console.log('mastercomponentdidupdate')
+  }
+
+  mounting = ()=>{this.setState({mount: true})}
+  unmounting = ()=>{this.setState({mount: false})}
+  ignoreProp = ()=>{this.setState({ignoreProp: Math.random()})}
+  seedgenerator = ()=>{this.setState({seed: Number.parseInt(Math.random()*100)})}
+   
+    
+  
+      render() {
+        console.log('master render')
+        
+    return (
+      <div>
+        <h1>master component</h1>
+        <button onClick={this.mounting} disabled ={this.state.mount}>mount</button>
+        <button onClick={this.unmounting} disabled ={!this.state.mount}>unmount</button>
+        
+        
+        <button onClick={this.ignoreProp} >ignoreProp</button>
+        <button onClick={this.seedgenerator} >seedgenerator</button>
+        {this.state.mount ? <Child ignoreProp={this.state.ignoreProp} seed={this.state.seed}/> : null}
+         
+      </div>
     );
   }
 }
